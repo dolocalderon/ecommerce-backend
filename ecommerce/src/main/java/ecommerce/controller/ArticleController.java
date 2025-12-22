@@ -1,6 +1,7 @@
 package ecommerce.controller;
 
 import ecommerce.config.Constants;
+import ecommerce.dto.ArticleDTO;
 import ecommerce.model.Article;
 import ecommerce.service.interfaces.ArticleService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @GetMapping("/get-all-article")
-    public ResponseEntity<List<Article>> getAllArticle() {
+    public ResponseEntity<List<ArticleDTO>> getAllArticle() {
         return ResponseEntity.ok(articleService.getAllArticle());
     }
 
