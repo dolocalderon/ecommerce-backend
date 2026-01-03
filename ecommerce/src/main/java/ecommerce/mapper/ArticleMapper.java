@@ -20,20 +20,21 @@ public class ArticleMapper {
                 .collect(Collectors.toList());
     }
 
-
     public static List<ArticleDTO> toDTOList(List<Article> articles, List<Price> prices) {
-        //INDEXAR PRECIOS A LOS ARTICULOS
-        Map<Long, List<Price>> pricesByArticleId = prices.stream().collect(Collectors.groupingBy(Price::getArticleId));
-        //ARMAR DTO
-        return articles.stream().map(article -> toDTO(article, pricesByArticleId.get(article.getId()))).toList();
+
+        Map<Long, Price> priceByArticleId = prices.stream()
+                .collect(Collectors.toMap(
+                        Price::getArticleId,
+                        price -> price
+                ));
+
+        return articles.stream()
+                .filter(article -> priceByArticleId.containsKey(article.getId()))
+                .map(article -> toDTO(article, priceByArticleId.get(article.getId())))
+                .collect(Collectors.toList());
     }
 
-    private static ArticleDTO toDTO(Article article, List<Price> prices) {
-        List<PriceDomain> priceDomains = prices == null
-                        ? List.of()
-                        : prices.stream()
-                        .map(PriceMapper::mapToDomain)
-                        .toList();
+    private static ArticleDTO toDTO(Article article, Price price) {
 
         return ArticleDTO.builder()
                 .id(article.getId())
@@ -42,7 +43,7 @@ public class ArticleMapper {
                 .description(article.getDescription())
                 .category(article.getCategory())
                 .brand(article.getBrand())
-                .price(priceDomains)
+                .price(PriceMapper.mapToDomain(price))
                 .build();
     }
 

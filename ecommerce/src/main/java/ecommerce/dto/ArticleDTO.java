@@ -21,5 +21,5 @@ public class ArticleDTO {
     private String category;
     private String brand;
     //PRICE
-    private List<PriceDomain> price;
+    private PriceDomain price;
 }
