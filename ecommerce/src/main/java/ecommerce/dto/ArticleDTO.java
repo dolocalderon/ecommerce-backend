@@ -6,20 +6,25 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
-@Builder
 @Data
-@AllArgsConstructor
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class ArticleDTO {
+
     //ARTICLE
     private Long id;
     private String code;
     private String name;
     private String description;
+
+    //CATEGORY
     private String category;
+
+    //BRAND
     private String brand;
+
     //PRICE
     private PriceDomain price;
 }
+

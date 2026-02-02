@@ -6,28 +6,37 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 
 @Entity
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 @Table(name = "price")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Price {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "priceId")
-    private Long priceId;
-
-    @Column(name = "articleId")
-    private Long articleId;
-
-    @Column(name = "isTemporary")
-    private Boolean isTemporary;
+    @Column(name = "id")
+    private Long id;
 
     @Column(name = "amount")
     private Double amount;
 
+    @Column(name = "isTemporary")
+    private Boolean isTemporary;
+
     @Column(name = "enabled")
     private Boolean enabled;
+
+    @Column(name = "startDate")
+    private LocalDateTime startDate;
+
+    @Column(name = "endDate")
+    private LocalDateTime endDate;
+
+    @ManyToOne
+    @JoinColumn(name = "article_id")
+    private Article article;
 }

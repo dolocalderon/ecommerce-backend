@@ -1,7 +1,6 @@
 package ecommerce.mapper;
 
 import ecommerce.domain.ArticleDomain;
-import ecommerce.domain.PriceDomain;
 import ecommerce.dto.ArticleDTO;
 import ecommerce.model.Article;
 import ecommerce.model.Price;
@@ -20,29 +19,14 @@ public class ArticleMapper {
                 .collect(Collectors.toList());
     }
 
-    public static List<ArticleDTO> toDTOList(List<Article> articles, List<Price> prices) {
-
-        Map<Long, Price> priceByArticleId = prices.stream()
-                .collect(Collectors.toMap(
-                        Price::getArticleId,
-                        price -> price
-                ));
-
-        return articles.stream()
-                .filter(article -> priceByArticleId.containsKey(article.getId()))
-                .map(article -> toDTO(article, priceByArticleId.get(article.getId())))
-                .collect(Collectors.toList());
-    }
-
-    private static ArticleDTO toDTO(Article article, Price price) {
-
+    public static ArticleDTO toDTO(Article article, Price price) {
         return ArticleDTO.builder()
                 .id(article.getId())
                 .code(article.getCode())
                 .name(article.getName())
                 .description(article.getDescription())
-                .category(article.getCategory())
-                .brand(article.getBrand())
+                .category(article.getCategory().getName())
+                .brand(article.getBrand().getName())
                 .price(PriceMapper.mapToDomain(price))
                 .build();
     }

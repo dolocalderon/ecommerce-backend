@@ -1,6 +1,5 @@
 package ecommerce.model;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,12 +7,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "category")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-@Table(name = "article")
-public class Article {
+public class Category {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -22,20 +22,6 @@ public class Article {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "description")
-    private String description;
-
-    @Column(name = "code")
-    private String code;
-
     @Column(name = "enabled")
     private Boolean enabled;
-
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
-
-    @ManyToOne
-    @JoinColumn(name = "brand_id")
-    private Brand brand;
 }

@@ -1,7 +1,5 @@
 package ecommerce.service.implementations;
 
-import ecommerce.domain.ArticleDomain;
-import ecommerce.domain.PriceDomain;
 import ecommerce.dto.ArticleDTO;
 import ecommerce.mapper.ArticleMapper;
 import ecommerce.model.Article;
@@ -15,9 +13,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ArticleServiceImpl implements ArticleService {
 
     private final ArticleRepository articleRepository;
@@ -25,14 +23,21 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public List<ArticleDTO> getAllArticle() {
-        List<Article> articles = articleRepository.findAll();
-        List<Price> prices = priceRepository.findByEnabledTrue();
-        return ArticleMapper.toDTOList(articles, prices);
+
+        return articleRepository.findAll().stream()
+                .map(article -> {
+                    Price price = priceRepository
+                            .findByArticleIdAndEnabledTrue(article.getId())
+                            .orElse(null);
+
+                    return ArticleMapper.toDTO(article, price);
+                })
+                .toList();
     }
 
     @Override
-    public Article saveArticle(Article article){
+    public Article saveArticle(Article article) {
         return articleRepository.save(article);
     }
-
 }
+

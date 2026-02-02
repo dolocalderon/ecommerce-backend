@@ -16,7 +16,10 @@ public class PriceMapper {
                 .collect(Collectors.toList());
     }
 
-    public static PriceDomain mapToDomain(Price price){
+    public static PriceDomain mapToDomain(Price price) {
+        if (price == null) {
+            return null;
+        }
         return modelMapper.map(price, PriceDomain.class);
     }
 }
